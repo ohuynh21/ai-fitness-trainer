@@ -3,7 +3,7 @@ import OpenAI from "openai";
 
 export async function POST(req: Request){
 
-    const {message, threadId} = await req.json()
+    const {message, threadId, fromUser = false} = await req.json()
     if (!threadId || !message) {
         return NextResponse.json({error: 'thread id and message required', success: false}, {status: 404})
     }
@@ -13,7 +13,10 @@ export async function POST(req: Request){
     try {
         const threadMessage = await openai.beta.threads.messages.create(threadId, {
             role: 'user',
-            content: message
+            content: message,
+            metadata: {
+                fromUser: fromUser
+            }
         })
         console.log(threadMessage)
         return NextResponse.json({message: threadMessage}, {status: 201})

@@ -14,7 +14,7 @@ export async function POST(req: Request){
         const run = await openai.beta.threads.runs.create(threadId, 
             {assistant_id: assistantId})
 
-        return NextResponse.json({run}, {status: 201})
+        return NextResponse.json({run, success: true}, {status: 201})
         
     } catch (error) {
         console.error(error)

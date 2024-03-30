@@ -3,6 +3,9 @@ import Navbar from "@/components/Navbar";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Assistant, User } from "@prisma/client";
+import { useAtom } from "jotai";
+import { assistantAtom, userAtom } from "@/atoms";
+import { Toaster } from "react-hot-toast";
 
 
 export default function AppLayout({
@@ -10,8 +13,42 @@ export default function AppLayout({
   }: {
     children: React.ReactNode;
   }) {
-    const [user, setUser] = useState<User | null>(null)
+   
+    const [user, setUser] = useAtom(userAtom)
+    const [assistant, setAssistant] = useAtom(assistantAtom)
+
     // use useEffect to prevent calling api on every re-render
+    useEffect(() => {
+
+      if(assistant) return
+
+      async function getAssistant() {
+        try {
+          const response = await axios.get<{
+            success: boolean, 
+            message ?: string, 
+            assistant: Assistant}>('api/assistant')
+        
+          if (!response.data.success || !response.data.assistant){
+            console.error(response.data.message ?? 'Unknown error')
+            setAssistant(null)
+            return
+          }
+
+          setAssistant(response.data.assistant)
+
+        } catch (error) {
+          console.error(error)
+          setAssistant(null)
+        }
+
+      }
+      getAssistant()
+    }, [setAssistant])
+    
+    
+    
+    
     useEffect(() => {
       async function getUser() {
         try {
@@ -37,12 +74,13 @@ export default function AppLayout({
       getUser()
     }, [])
 
-    console.log('User: ', user)
+    // console.log('User: ', user)
     
     return (
       <div className = 'flex flex-col w-full h-full'>
         <Navbar />
         {children}
+        <Toaster/>
       </div>
     );
   }
