@@ -91,6 +91,7 @@ export async function POST(request: Request) {
   const challengePreferences = await prismadb.challengePreferences.findMany({
     where: {
       challengeId,
+      sendChallenges: true,
     },
   });
 
