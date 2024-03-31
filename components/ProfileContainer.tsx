@@ -43,6 +43,7 @@ function ProfileContainer({challengePreferences}: ProfileContainerProps) {
     
     const handleToggleNotifications = () => {
         setSendNotifications((prev) => (!prev))
+        {sendNotifications && saveSubscription()}
 
     }
     const handleSelectDifficulty = (difficultyId: Difficulties) => {
@@ -51,6 +52,8 @@ function ProfileContainer({challengePreferences}: ProfileContainerProps) {
 
     const handleToggleSendChallenges = () => {
         setSendChallenges((prev) => (!prev))
+
+
     }
 
     const handleSave = async () => {
@@ -108,11 +111,6 @@ function ProfileContainer({challengePreferences}: ProfileContainerProps) {
         }
       }, [saveSubscription]);
 
-    const handleToggleAndSaveSubscription = () => {
-        handleToggleNotifications();
-        saveSubscription();
-      }
-
     return (
         <div className='flex flex-col'>
             <div className='flex flex-row justify-between items-center mb-4'>
@@ -131,7 +129,7 @@ function ProfileContainer({challengePreferences}: ProfileContainerProps) {
                     <h3 className = 'font-medium text-lg text-gray-900'>Push Notifications</h3>
                     <p> Receive push notifications when new challenges are available</p>
                 </div>
-                <Switch checked = {sendNotifications} onCheckedChange={handleToggleAndSaveSubscription}></Switch>
+                <Switch checked = {sendNotifications} onCheckedChange={handleToggleNotifications}></Switch>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                 {difficulties.map((difficulty) => (
