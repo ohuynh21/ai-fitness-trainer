@@ -43,7 +43,9 @@ function ProfileContainer({challengePreferences}: ProfileContainerProps) {
     
     const handleToggleNotifications = () => {
         setSendNotifications((prev) => (!prev))
-        {sendNotifications && saveSubscription()}
+        if (sendNotifications) {
+            saveSubscription()
+        }
 
     }
     const handleSelectDifficulty = (difficultyId: Difficulties) => {
