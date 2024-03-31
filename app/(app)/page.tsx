@@ -154,7 +154,7 @@ function ChatPage () {
       return () => clearInterval(intervalId)
     }
 
-    // every time fetching changes state, auto-scroll to the bottom of the div
+    // every time sending changes state, auto-scroll to the bottom of the div
     useEffect(() => {
       const div = document.querySelector('.flex-grow.overflow-y-scroll.p-8.space-y-2');
       if (div) {
@@ -162,7 +162,7 @@ function ChatPage () {
         console.log('here')
       }
       
-    }, [fetching]);
+    }, [sending]);
 
 
     return (
