@@ -63,7 +63,7 @@ export default function AppLayout({
       const serviceWorkerRegistration = await navigator.serviceWorker.ready;
       const subscription = await serviceWorkerRegistration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
       });
   
       try {
