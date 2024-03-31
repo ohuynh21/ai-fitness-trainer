@@ -6,6 +6,7 @@ import { Assistant, User } from "@prisma/client";
 import { useAtom } from "jotai";
 import { assistantAtom, userAtom } from "@/atoms";
 import { Toaster } from "react-hot-toast";
+import useServiceWorker from "@/hooks/useServiceWorker";
 
 
 export default function AppLayout({
@@ -17,6 +18,9 @@ export default function AppLayout({
     const [user, setUser] = useAtom(userAtom)
     const [assistant, setAssistant] = useAtom(assistantAtom)
 
+    // Hooks
+    useServiceWorker();
+    
     // use useEffect to prevent calling api on every re-render
     useEffect(() => {
 
