@@ -82,8 +82,8 @@ function ProfileContainer({challengePreferences}: ProfileContainerProps) {
         }
 
     }
-
-    const saveSubscription = async () => {
+    
+    const saveSubscription = useCallback(async () => {
         const serviceWorkerRegistration = await navigator.serviceWorker.ready;
         const subscription = await serviceWorkerRegistration.pushManager.subscribe({
           userVisibleOnly: true,
@@ -102,7 +102,7 @@ function ProfileContainer({challengePreferences}: ProfileContainerProps) {
           console.error(error);
           toast.error("Failed to save subscription.");
         }
-      };
+      }, []);
     
       useEffect(() => {
         if ("Notification" in window && "serviceWorker" in navigator) {
