@@ -3,7 +3,7 @@ import webPush from "web-push";
 
 webPush.setVapidDetails(
   "mailto:flappydragon123@gmail.com",
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY as string,
+  process.env.NEXT_PUBLIC_VAPID_KEY as string,
   process.env.VAPID_PRIVATE_KEY as string
 );
 
