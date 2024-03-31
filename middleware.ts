@@ -12,7 +12,8 @@ export default authMiddleware({
    '/api/run/create',
    '/api/run/retrieve', 
    '/api/challenge-users', 
-   '/api/openai'],
+   '/api/openai',
+   '/api/send-notifications',],
 });
  
 export const config = {
