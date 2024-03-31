@@ -1,6 +1,6 @@
 'use client'
 import { ChallengePreferences } from '@prisma/client';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button } from './ui/button';
 import { Switch } from "@/components/ui/switch"
 import DifficultyCard from './DifficultyCard';
@@ -30,7 +30,8 @@ const difficulties = [
 
 type Difficulties = 'EASY' | 'MEDIUM' | 'HARD'
 interface ProfileContainerProps {
-    challengePreferences: ChallengePreferences
+    challengePreferences: ChallengePreferences,
+
 }
 
 function ProfileContainer({challengePreferences}: ProfileContainerProps) {
@@ -78,6 +79,40 @@ function ProfileContainer({challengePreferences}: ProfileContainerProps) {
         }
 
     }
+    const saveSubscription = useCallback(async () => {
+        const serviceWorkerRegistration = await navigator.serviceWorker.ready;
+        const subscription = await serviceWorkerRegistration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
+        });
+    
+        try {
+          const response = await axios.post("/api/subscription", subscription);
+    
+          if (!response.data.success) {
+            console.error(response.data.message ?? "Unknown error.");
+            toast.error("Failed to save subscription.");
+            return;
+          }
+        } catch (error) {
+          console.error(error);
+          toast.error("Failed to save subscription.");
+        }
+      }, []);
+    
+      useEffect(() => {
+        if ("Notification" in window && "serviceWorker" in navigator) {
+          if (Notification.permission === "granted") {
+            saveSubscription();
+          }
+        }
+      }, [saveSubscription]);
+
+    const handleToggleAndSaveSubscription = () => {
+        handleToggleNotifications();
+        saveSubscription();
+      }
+
     return (
         <div className='flex flex-col'>
             <div className='flex flex-row justify-between items-center mb-4'>
@@ -96,7 +131,7 @@ function ProfileContainer({challengePreferences}: ProfileContainerProps) {
                     <h3 className = 'font-medium text-lg text-gray-900'>Push Notifications</h3>
                     <p> Receive push notifications when new challenges are available</p>
                 </div>
-                <Switch checked = {sendNotifications} onCheckedChange={handleToggleNotifications}></Switch>
+                <Switch checked = {sendNotifications} onCheckedChange={handleToggleAndSaveSubscription}></Switch>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                 {difficulties.map((difficulty) => (

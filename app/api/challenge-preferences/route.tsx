@@ -8,7 +8,7 @@ export async function POST(request: Request) {
 
     const {id, sendNotifications, challengeId, sendChallenges} = await request.json()
 
-    if (!id || sendNotifications == undefined || !challengeId){
+    if (!id || sendNotifications == undefined || !challengeId || sendChallenges){
         return NextResponse.json({message: 'missing required fields'}, {status: 400})
     }
 

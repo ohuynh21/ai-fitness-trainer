@@ -1,7 +1,11 @@
 import ProfileContainer from '@/components/ProfileContainer';
 import { prismadb } from '@/lib/prismadb';
 import { currentUser } from '@clerk/nextjs';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
+import NotificationModal from "@/components/NotificationModel";
+import axios from 'axios';
+import toast from 'react-hot-toast';
+
 
 export default async function ProfilePage () {
     const user = await currentUser()
@@ -26,9 +30,12 @@ export default async function ProfilePage () {
     }
 
 
+    
+
     return (
         <div className='max-w-screen-lg m-10 lg:mx-auto'>
             <ProfileContainer challengePreferences = {challengePreferences}/>
+
         </div>
      );
 }
