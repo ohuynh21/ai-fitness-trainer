@@ -162,7 +162,7 @@ function ChatPage () {
         console.log('here')
       }
       
-    }, [sending]);
+    }, [polling]);
 
 
     return (
