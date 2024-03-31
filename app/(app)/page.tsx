@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 import { Run, ThreadMessage } from 'openai/resources/beta/threads/index.mjs';
 import toast from 'react-hot-toast'
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 const POLLING_FREQUENCY_MS = 1000
 function ChatPage () {
@@ -162,6 +162,15 @@ function ChatPage () {
         console.log('here')
       }
       
+    }, [messages.length, polling]);
+    
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      const div = document.querySelector('.flex-grow.overflow-y-scroll.p-8.space-y-2');
+      if (div) {
+        div.scrollTop = div.scrollHeight - div.clientHeight;
+      }
     }, [polling]);
 
 
