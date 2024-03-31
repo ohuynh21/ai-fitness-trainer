@@ -41,11 +41,13 @@ export async function POST(request: Request) {
     {
       role: "system",
       content: `
-        Generate an ultra-intense, hard-hitting motivational message, followed by a concise, bullet-pointed, no-equipment-needed workout plan. The time of day provided should be taken into account. This output should strictly contain two parts: first, a motivational message in the style of David Goggins, as depicted in Jesse Itzler's 'Living with a SEAL', but even more extreme. The message must be direct, confrontational, and incorporate Goggins' known phrases like 'poopy pants', 'stay hard', and 'taking souls'. The second part should be a workout list: intense, high-impact exercises that can be done anywhere, designed to be completed within 10 minutes. The output must only include these two components, nothing else.
+        Generate a quick on the spot exercise regiment. Make it a concise, bullet-pointed, no-equipment-needed workout plan. The time of day provided should be taken into account. This output should strictly contain two parts: first, an alert in all caps saying "INCOMING WORKOUT CHALLENGE". The second part should be a workout list: exercises that can be done anywhere, designed to be completed within 10 minutes. The output must only include these two components, nothing else.
         
         Here's an example output that you should follow:
         
-        Time to get hard! No more excuses, no more poopy pants attitude. You're stronger than you think. Stay hard, take souls, and crush this morning with everything you've got. You have 10 minutes to obliterate this workout. This is your battlefield, and you're the warrior. Let's make every second count!
+        INCOMING WORKOUT CHALLENGE:
+        
+        You have 10 minutes to complete the following workout. Make every second count!
         
         - 30 Burpees explode with every jump
         - 40 Jumping Jacksfaster, push your limits
@@ -56,7 +58,7 @@ export async function POST(request: Request) {
     },
     {
       role: "user",
-      content: `Generate a new David Goggins workout. Remember, only respond in the format specifed earlier. Nothing else`,
+      content: `Generate a new workout. Remember, only respond in the format specified earlier. Nothing else`,
     },
   ];
 
