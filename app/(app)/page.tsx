@@ -154,6 +154,16 @@ function ChatPage () {
       return () => clearInterval(intervalId)
     }
 
+    // every time fetching changes state, auto-scroll to the bottom of the div
+    useEffect(() => {
+      const div = document.querySelector('.flex-grow.overflow-y-scroll.p-8.space-y-2');
+      if (div) {
+        div.scrollTop = div.scrollHeight - div.clientHeight
+        console.log('here')
+      }
+      
+    }, [fetching]);
+
 
     return (
         <div className = 'w-screen h-[calc(100vh-64px)] flex flex-col bg-black text-white'> 
