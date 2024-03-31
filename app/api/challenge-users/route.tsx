@@ -1,4 +1,3 @@
-
 import { prismadb } from "@/lib/prismadb";
 import { UserMeta, User } from "@prisma/client";
 import axios from "axios";
@@ -46,20 +45,18 @@ export async function POST(request: Request) {
         
         Here's an example output that you should follow:
         
-        Incoming Workout Challenge:
-
-        Complete the following:
+        Time to get hard! No more excuses, no more poopy pants attitude. You're stronger than you think. Stay hard, take souls, and crush this morning with everything you've got. You have 10 minutes to obliterate this workout. This is your battlefield, and you're the warrior. Let's make every second count!
         
-        - 30 Burpees explode with every jump
-        - 40 Jumping Jacks faster, push your limits
-        - 50 Mountain Climbers relentless pace
-        - 60 High Knees drive them up with fury
-        - 2 Minute Plank solid and unyielding
+        - 30 Burpees – explode with every jump
+        - 40 Jumping Jacks – faster, push your limits
+        - 50 Mountain Climbers – relentless pace
+        - 60 High Knees – drive them up with fury
+        - 2 Minute Plank – solid and unyielding
         `,
     },
     {
       role: "user",
-      content: `Generate a new workout. Remember, only respond in the format specified earlier. Nothing else`,
+      content: `Generate a new David Goggins workout. Remember, only respond in the format specifed earlier. Nothing else`,
     },
   ];
 
@@ -92,7 +89,6 @@ export async function POST(request: Request) {
   const challengePreferences = await prismadb.challengePreferences.findMany({
     where: {
       challengeId,
-      sendChallenges: true,
     },
   });
 
@@ -152,6 +148,26 @@ export async function POST(request: Request) {
             fromUser: "false",
           })
         );
+
+        // Send Notification
+        if (cp.sendNotifications) {
+          const correspondingUserMeta = userMetaMap[cp.userId];
+          threadAndNotificationsPromises.push(
+            axios.post(
+              `${process.env.NEXT_PUBLIC_BASE_URL}/api/send-notifications`,
+              {
+                subscription: {
+                  endpoint: correspondingUserMeta.endpoint,
+                  keys: {
+                    auth: correspondingUserMeta.auth,
+                    p256dh: correspondingUserMeta.p256dh,
+                  },
+                },
+                message,
+              }
+            )
+          );
+        }
       }
     });
 
